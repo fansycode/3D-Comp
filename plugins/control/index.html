@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>使用Demo</title>
+
+	<!-- 引入样式文件与js文件 -->
+
+	<link rel="stylesheet" type="text/css" href="../../../plugins/control/control.css">
+
+	<script type="text/javascript" src="../../../plugins/js/control/scroll.js"></script>
+
+	<script type="text/javascript" src="../../../plugins/js/control/control.js"></script>
+
+	<!-- 引入样式文件与js文件 -->
+
+</head>
+<body>
+
+	<!-- 控件与接口使用 -->
+
+	<!-- 消息对话框 by Sam_Yu -->
+	<ul class="message" id="urlLinkMessageBox">
+			
+	</ul>
+	<!-- 消息对话框 by Sam_Yu -->
+
+	<!-- 工具栏 -->
+	<ul class="tools-bar" id="toolsBarBox">
+
+		<li id="toPreview" onclick="onPreview()">	
+			<img src="../../../../assets/images/left.svg">
+		</li>
+
+		<li id="toNext" onclick="onNext()">	
+			<img src="../../../../assets/images/right.svg">
+		</li>
+
+		<li onclick="onHiddenOrShow(document.getElementById('urlLinkMessageBox'))">	
+			<img src="../../../../assets/images/message.svg">
+		</li>
+
+		<li onclick="onHiddenOrShow(document.getElementById('playToolsBox'))">	
+			<img src="../../../../assets/images/camera.svg">
+		</li>
+
+	</ul>
+	<!-- 工具栏 -->
+
+	<!-- 播放栏 -->
+	<ul class="play-tools" id="playToolsBox">
+
+		<li class="scroll" id="scroll">
+			<div class="bar" id="bar"></div>
+			<div class="mask" id="mask"></div>
+		</li>
+
+		<li class="btn">
+			<a id="progressShow" class="desc-show">0%</a>			
+		</li>
+
+		<li class="btn" onclick="onPlayerClick(document.getElementById('playerIcon'))">
+			<img id="playerIcon" src="../../../assets/images/play.svg">
+		</li>
+
+		<li class="btn" onclick="onRestore()">
+			<img src="../../../assets/images/clean.svg">
+		</li>
+
+	</ul>
+	<!-- 播放栏 -->
+
+
+
+	<!-- 自定义接口 -->
+	<script type="text/javascript">
+		function onPlay(){}
+		function onStop(){}
+		function loadObject(){}
+		function unloadObjectByName(){}
+	</script>
+	
+</body>
+</html>

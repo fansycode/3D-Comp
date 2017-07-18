@@ -1,0 +1,218 @@
+﻿var comp = [
+{
+"name": "0.主路.obj",
+"id": "0.主路.obj",
+"time": "2017-7-1",
+"path": "bridge/OBJ/0.主路/",
+"state": "1",
+"delay": ""
+},
+{
+"name": "1.主路+收费站以及后面.obj",
+"id": "1.主路+收费站以及后面.obj",
+"time": "2017-7-5",
+"path": "bridge/OBJ/1.主路+收费站以及后面/",
+"state": "1",
+"delay": ""
+},
+{
+"name": "2.C路段1.obj",
+"id": "2.C路段1.obj",
+"time": "2017-7-10",
+"path": "bridge/OBJ/2.C路段1/",
+"state": "1",
+"delay": ""
+},
+{
+"name": "3.C路段2.obj",
+"id": "3.C路段2.obj",
+"time": "2017-7-15",
+"path": "bridge/OBJ/3.C路段2/",
+"state": "1",
+"delay": ""
+},
+{
+"name": "4.B路段.obj",
+"id": "4.B路段.obj",
+"time": "2017-7-20",
+"path": "bridge/OBJ/4.B路段/",
+"state": "2",
+"delay": ""
+},
+{
+"name": "5.B和C至一号桥.obj",
+"id": "5.B和C至一号桥.obj",
+"time": "2017-7-25",
+"path": "bridge/OBJ/5.B和C至一号桥/",
+"state": "2",
+"delay": ""
+},
+{
+"name": "6.D路段1.obj",
+"id": "6.D路段1.obj",
+"time": "2017-7-30",
+"path": "bridge/OBJ/6.D路段1/",
+"state": "2",
+"delay": ""
+},
+{
+"name": "7.D路段2.obj",
+"id": "7.D路段2.obj",
+"time": "2017-8-5",
+"path": "bridge/OBJ/7.D路段2/",
+"state": "2",
+"delay": ""
+},
+{
+"name": "8.E路段1.obj",
+"id": "8.E路段1.obj",
+"time": "2017-8-10",
+"path": "bridge/OBJ/8.E路段1/",
+"state": "0",
+"delay": "1"
+},
+{
+"name": "9.E路段2.obj",
+"id": "9.E路段2.obj",
+"time": "2017-8-15",
+"path": "bridge/OBJ/9.E路段2/",
+"state": "0",
+"delay": "1"
+},
+{
+"name": "10.E路段3.obj",
+"id": "10.E路段3.obj",
+"time": "2017-8-20",
+"path": "bridge/OBJ/10.E路段3/",
+"state": "0",
+"delay": "1"
+},
+{
+"name": "11.A路段1.obj",
+"id": "11.A路段1.obj",
+"time": "2017-8-25",
+"path": "bridge/OBJ/11.A路段1/",
+"state": "0",
+"delay": ""
+},
+{
+"name": "12.A路段2.obj",
+"id": "12.A路段2.obj",
+"time": "2017-8-30",
+"path": "bridge/OBJ/12.A路段2/",
+"state": "0",
+"delay": ""
+},
+{
+"name": "13.一号桥墩1.obj",
+"id": "13.一号桥墩1.obj",
+"time": "2017-9-5",
+"path": "bridge/OBJ/13.一号桥墩1/",
+"state": "0",
+"delay": ""
+},
+{
+"name": "14.一号桥墩2.obj",
+"id": "14.一号桥墩2.obj",
+"time": "2017-9-10",
+"path": "bridge/OBJ/14.一号桥墩2/",
+"state": "0",
+"delay": ""
+},
+{
+"name": "15.一号桥墩基座.obj",
+"id": "15.一号桥墩基座.obj",
+"time": "2017-9-15",
+"path": "bridge/OBJ/15.一号桥墩基座/",
+"state": "0",
+"delay": ""
+},
+{
+"name": "16.一号桥的桥面.obj",
+"id": "16.一号桥的桥面.obj",
+"time": "2017-9-20",
+"path": "bridge/OBJ/16.一号桥的桥面/",
+"state": "0",
+"delay": ""
+},
+{
+"name": "18.二号桥的桥墩1.obj",
+"id": "18.二号桥的桥墩1.obj",
+"time": "2017-9-25",
+"path": "bridge/OBJ/18.二号桥的桥墩1/",
+"state": "0",
+"delay": ""
+},
+{
+"name": "19.二号桥的桥墩2.obj",
+"id": "19.二号桥的桥墩2.obj",
+"time": "2017-9-30",
+"path": "bridge/OBJ/19.二号桥的桥墩2/",
+"state": "0",
+"delay": ""
+},
+{
+"name": "20.二号桥的基座.obj",
+"id": "20.二号桥的基座.obj",
+"time": "2017-10-5",
+"path": "bridge/OBJ/20.二号桥的基座/",
+"state": "0",
+"delay": ""
+},
+{
+"name": "21.二号桥的桥面.obj",
+"id": "21.二号桥的桥面.obj",
+"time": "2017-10-10",
+"path": "bridge/OBJ/21.二号桥的桥面/",
+"state": "0",
+"delay": ""
+},
+{
+"name": "22.两座汽车桥的桥墩1.obj",
+"id": "22.两座汽车桥的桥墩1.obj",
+"time": "2017-10-15",
+"path": "bridge/OBJ/22.两座汽车桥的桥墩1/",
+"state": "0",
+"delay": ""
+},
+{
+"name": "23.两座汽车桥的桥墩2.obj",
+"id": "23.两座汽车桥的桥墩2.obj",
+"time": "",
+"path": "bridge/OBJ/23.两座汽车桥的桥墩2/",
+"state": "0",
+"delay": ""
+},
+{
+"name": "24.两座汽车桥的矩形框.obj",
+"id": "24.两座汽车桥的矩形框.obj",
+"time": "",
+"path": "bridge/OBJ/24.两座汽车桥的矩形框/",
+"state": "0",
+"delay": ""
+},
+{
+"name": "25.草皮和柏油.obj",
+"id": "25.草皮和柏油.obj",
+"time": "",
+"path": "bridge/OBJ/25.马路铺柏油/",
+"state": "0",
+"delay": ""
+},
+{
+"name": "26.马路铺车道线.obj",
+"id": "26.马路铺车道线.obj",
+"time": "",
+"path": "bridge/OBJ/26.马路铺车道线/",
+"state": "0",
+"delay": ""
+},
+{
+"name": "27.加栏杆.obj",
+"id": "27.加栏杆.obj",
+"time": "",
+"path": "bridge/OBJ/27.加栏杆/",
+"state": "0",
+"delay": ""
+},
+]

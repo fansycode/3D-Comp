@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<style type="text/css">
+	body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
+	</style>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=GIcHZh62nuGAhImEEtd8U2Iu5ADtGQVv"></script>
+	<title>杭州板块GIS系统</title>
+</head>
+<body>
+	<div id="allmap"></div>
+</body>
+</html>
+<script type="text/javascript">
+	// 百度地图API功能
+	var map = new BMap.Map("allmap", {mapType:BMAP_HYBRID_MAP});    // 创建Map实例//BMAP_HYBRID_MAP   BMAP_SATELLITE_MAP
+	var point = new BMap.Point(119.921687, 29.931487);  //lg, +0.0065 , lt, +0.006
+	map.centerAndZoom(point, 16);  // 初始化地图,设置中心点坐标和地图级别
+	map.addControl(new BMap.MapTypeControl());   //添加地图类型控件
+	map.setCurrentCity("杭州");          // 设置地图显示的城市 此项是必须设置的
+	map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+	
+    var marker = new BMap.Marker(point);  // 创建标注
+	map.addOverlay(marker);              // 将标注添加到地图中
+	marker.setLabel(new BMap.Label("杭州环山互通", {offset: new BMap.Size(20, -10)}));
+	
+	var opts = {
+	  width : 200,     // 信息窗口宽度
+	  height: 100,     // 信息窗口高度
+	  title : "杭州环山互通" , // 信息窗口标题
+	}
+	
+	var sContent =
+	"<h4 style='margin:0 0 5px 0;padding:0.2em 0'>杭州高速板块环山互通</h4>" + 
+	"<a href=./source/webgl_loader_obj_mtl.html target=&quot;_blank&quot; style='font-size:15px; color:0x0000ff'>>>>动态演示</a>" +
+	"<p style='margin:0;line-height:1.5;font-size:13px'>地址: 环山互通位于杭州市富阳双林村</p>" + 
+	"<p style='margin:0;line-height:1.5;font-size:13px'>建设时间：xxxx - xxxx</p>" + 
+	"</div>";
+	
+	//var infoWindow = new BMap.InfoWindow("地址：杭州市高速板块环山互通", opts);  // 创建信息窗口对象 
+	var infoWindow = new BMap.InfoWindow(sContent);  // 创建信息窗口对象 
+	marker.addEventListener("click", function(){          
+		map.openInfoWindow(infoWindow,point); //开启信息窗口
+	});
+	
+	var polyline = new BMap.Polyline([
+		new BMap.Point(119.887781, 29.913379),
+		new BMap.Point(119.890108, 29.914521),
+		new BMap.Point(119.892093, 29.915429),
+		new BMap.Point(119.896054, 29.917159),
+		new BMap.Point(119.899073, 29.918669),
+		new BMap.Point(119.902962, 29.920962),
+		new BMap.Point(119.905648, 29.922911),
+		new BMap.Point(119.908667, 29.925008),
+		new BMap.Point(119.912511, 29.927168),
+		new BMap.Point(119.916572, 29.929046),
+		new BMap.Point(119.92074, 29.93083  ),
+		new BMap.Point(119.922303, 29.931644),
+		new BMap.Point(119.923614, 29.932426),
+		new BMap.Point(119.9248, 29.933255  ),
+		new BMap.Point(119.926543, 29.934648),
+		new BMap.Point(119.928232, 29.93637 ),
+		new BMap.Point(119.930459, 29.939531),
+		new BMap.Point(119.931609, 29.942081),
+		new BMap.Point(119.932364, 29.944585),
+		new BMap.Point(119.932669, 29.946243),
+		new BMap.Point(119.932705, 29.949091),
+		new BMap.Point(119.9324, 29.951563  ),
+		new BMap.Point(119.931807, 29.953895),
+		new BMap.Point(119.930873, 29.956523),
+		new BMap.Point(119.928932, 29.961451)
+	], {strokeColor:"red", strokeWeight:6, strokeOpacity:0.7});   //创建折线
+	map.addOverlay(polyline);   //增加折线
+	
+	
+	var polygon = new BMap.Polygon([
+		new BMap.Point(119.915139, 29.930939),
+		new BMap.Point(119.917403, 29.92565),
+		new BMap.Point(119.923763, 29.927903),
+		new BMap.Point(119.930374, 29.931597),
+		new BMap.Point(119.932961, 29.93482),
+		new BMap.Point(119.924948, 29.938107),
+		new BMap.Point(119.921463, 29.935196),
+		new BMap.Point(119.91654, 29.932974)
+	], {strokeColor:"blue", strokeWeight:2, strokeOpacity:0.5, fillOpacity: 0.3});  //创建多边形
+	map.addOverlay(polygon);   //增加多边形
+	
+/*	
+	function showInfo(e){
+		alert(e.point.lng + ", " + e.point.lat);
+	}
+	map.addEventListener("click", showInfo);
+*/	
+	
+</script>

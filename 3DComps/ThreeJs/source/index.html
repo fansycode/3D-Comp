@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>杭州板块动态演示系统</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+		<!-- 自定义样式 -->
+		<style>
+			body {
+				font-family: Monospace;
+				background-color: #000;
+				color: #000;
+				margin: 0px;
+				overflow: hidden;
+			}
+			#info2 {
+				color: #fff;
+				position: absolute;
+				top: 10px;
+				width: 100%;
+				text-align: right;
+				z-index: 100;
+				display:block;
+			}
+
+			/*消息对话框 by Sam_Yu*/
+			.message{background-color: white;position: absolute;left: 85%;top: 10%;width: 150px;height: 200px;padding: 10px;list-style: none;border-radius: 3px;visibility: hidden;opacity: 0.75;}
+			
+			/*消息对话框 by Sam_Yu*/
+
+			/*工具栏 by Sam_Yu*/
+			.tools-bar{position: absolute;left: 39%;bottom: 2%;width: 300px;height: 30px;list-style: none;padding: 0px;display: inline;visibility: hidden;}
+			.tools-bar li{float: left;width: 40px;height: 100%padding: 5px 5px;margin-right: 10px;}
+			.tools-bar li:hover{background-color: #673ab7;border-radius: 20px;}
+			.tools-bar img{width: 100%;height: 100%;}
+			/*工具栏 by Sam_Yu*/
+
+			/*播放控件栏*/
+			.play-tools{display: inline;position: absolute;padding: 0px;bottom: 10%;left: 20%;width: 1000px;height: 30px;list-style: none;visibility: hidden;}
+			.play-tools .btn{float: left;width: 50px;height: 100%;margin: 0px;padding: 5px 0px;}	
+			.play-tools .btn:hover{background-color: #673ab7;}	
+			.play-tools img{width: 100%;height: 100%;}
+
+			.play-tools .scroll{width: 500px;height: 5px;background-color: #ccc;float: left;margin-top: 18px;margin-right: 10px;}
+			.play-tools .bar{width: 10px;height: 20px;background-color: #369;position: absolute;top: 8px;left: 0;cursor: pointer;}
+			.play-tools .mask{position: absolute;left: 0;top: 18px;background: #369;width: 0;height: 5px;}
+
+			.play-tools .scroll-input{width: 50px;height: 20px;}
+			.play-tools .scroll-input:hover{background: none;} 
+			.play-tools input{width: 100%;height: 100%;border: 1px solid gray;border-radius: 3px;margin-top: 5px;font-size: 18px;}
+
+			.play-tools .desc-body{width: 60px;margin-left: 10px;}
+
+			.desc-show{color: white;font-size: 18px;line-height: 2}
+			/*播放控件栏*/
+
+		</style>
+		<!-- 自定义样式 -->
+
+	</head>
+
+	<body>
+		<div id="info2"></div>
+		
+		</div>
+
+		<!-- 消息对话框 by Sam_Yu -->
+		<ul class="message" id="urlLinkMessageBox">
+			
+		</ul>
+		<!-- 消息对话框 by Sam_Yu -->
+
+		<!-- 工具栏 -->
+		<ul class="tools-bar" id="toolsBarBox">
+
+			<!--li onclick="onCameraNeedResize(1, 100)">	
+				<img src="../../../../assets/images/blowup.svg">
+			</li>
+
+			<li onclick="onCameraNeedResize(1, -100)">	
+				<img src="../../../../assets/images/reduce.svg">
+			</li-->
+
+			<li id="toPreview" onclick="onPreview()">	
+				<img src="../../../../assets/images/left.svg">
+			</li>
+
+			<li id="toNext" onclick="onNext()">	
+				<img src="../../../../assets/images/right.svg">
+			</li>
+
+			<li onclick="onNeedShowOrHidden(document.getElementById('urlLinkMessageBox'))">	
+				<img src="../../../../assets/images/message.svg">
+			</li>
+
+			<li onclick="onNeedShowOrHidden(document.getElementById('playToolsBox'))">	
+				<img src="../../../../assets/images/camera.svg">
+			</li>
+		</ul>
+		<!-- 工具栏 -->
+
+		<!-- 播放栏 -->
+		<ul class="play-tools" id="playToolsBox">
+
+			<li class="scroll" id="scroll">
+				<div class="bar" id="bar"></div>
+				<div class="mask" id="mask"></div>
+			</li>
+
+			<li class="btn" style="width: 20px; margin-right:10px" >
+				<a id="progressShow" class="desc-show">0%</a>			
+			</li>
+
+			<li class="btn" onclick="onPlayerClick(document.getElementById('playerIcon'))">
+				<img id="playerIcon" src="../../../assets/images/play.svg">
+			</li>
+
+			<li class="btn" onclick="onRestore()">
+				<img src="../../../assets/images/clean.svg">
+			</li>
+
+			
+			<!--li class="btn scroll-input">
+
+				
+				<input type="Number" step="0.5" onchange="alert(this.value);">
+
+			</li>
+
+			
+			<li class="btn scroll-input">
+				<input type="Number" step="0.5">
+			</li-->
+
+		</ul>
+		<!-- 播放栏 -->
+
+
+		<script src="../build/three.js"></script>
+		<script src="js/loaders/DDSLoader.js"></script>
+		<script src="js/loaders/MTLLoader.js"></script>
+		<script src="js/loaders/OBJLoader.js"></script>
+		<script src="js/controls/TrackballControls.js"></script>
+		<script src="js/controls/OrbitControls.js"></script>
+		<script src="js/Detector.js"></script>
+		<script src="js/libs/stats.min.js"></script>
+		<script src="js/renderers/Projector.js"></script>
+		<!-- 引入json数据 -->
+		<script src="data/model.js"></script>
+		<!-- 引入json数据 -->
+		<script src="comp.json"></script>
+		<script src="js/loaders/GLTFLoader.js"></script>
+		<!--script src="js/loaders/GLTF2Loader.js"></script-->
+		<script>
+			var container, iter, timeoutProcess;
+
+			var camera, scene, renderer, controls;
+
+			var windowHalfX = window.innerWidth / 2;
+			var windowHalfY = window.innerHeight / 2;
+			
+			var objs = new Array();
+
+			init();
+			animate();
+			console.log("comp length: ", comp.length);
+			function init() {
+
+				container = document.createElement( 'div' );
+
+				document.body.appendChild( container );
+
+				camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 1, 100000 );
+				camera.position.z = 1000;
+								
+				// scene
+				scene = new THREE.Scene();
+								
+				var ambient = new THREE.AmbientLight( 0xffffff, 1);
+				scene.add( ambient );
+
+				var directionalLight = new THREE.DirectionalLight( 0xffffff);
+				directionalLight.position.set( 0, 200, 200 );
+				//scene.add( directionalLight );
+				document.getElementById("toolsBarBox").style.visibility = "visible";
+				
+				document.getElementById("mask").style.width = '50px';
+				
+/*	
+				// model
+				var onProgress = function ( xhr ) {
+					if ( xhr.lengthComputable ) {
+						var percentComplete = xhr.loaded / xhr.total * 100;
+						//console.log( Math.round(percentComplete, 2) + '% downloaded' );
+						var x = document.getElementById("info2");  //查找元素
+
+						x.innerHTML="Loading "+ Math.round(percentComplete, 2) + "%";    //改变内容
+					}
+				};
+
+						
+				var onError = function ( xhr ) { };
+
+				THREE.Loader.Handlers.add( /\.dds$/i, new THREE.DDSLoader() );
+				
+				var loadStartTime = performance.now();
+				
+				var mtlLoader = new THREE.MTLLoader();
+				mtlLoader.setPath( 'bridge/hangzhou/1/' );				
+				mtlLoader.load( '11.mtl', function( materials ) {
+				
+					materials.preload();
+
+					var objLoader = new THREE.OBJLoader();
+					objLoader.setMaterials( materials );
+					
+					objLoader.setPath( 'bridge/hangzhou/1/' );
+					objLoader.load( '11.obj', function ( object ) {
+						console.log("Load time" + ( performance.now() - loadStartTime ).toFixed( 2 ) + "ms")
+						scene.add( object );
+					}, onProgress, onError );
+
+				});
+
+*/				
+				var loader = new THREE.GLTFLoader();
+				//var	loader = new THREE.GLTF2Loader();
+				
+				var loadStartTime = performance.now();		
+
+				loader.load('bridge/hangzhou/1/11.glb', function (data) {
+					gltf = data;
+					var object;
+					if ( gltf.scene !== undefined ) {
+						object = gltf.scene; // default scene
+						console.log("default")
+					} else if ( gltf.scenes.length > 0 ) {
+						object = gltf.scenes[0]; // other scene
+						console.log("other scene")
+					}
+					
+					scene.add(object);
+					console.log("Load time " + ( performance.now() - loadStartTime ).toFixed( 2 ) + "ms");
+				});
+				
+				
+				
+				onRestore();
+				
+				renderer = new THREE.WebGLRenderer();
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.setClearColor(0x3b3c3c);							//scene 背景颜色修改
+				container.appendChild( renderer.domElement );
+				
+				controls = new THREE.OrbitControls( camera, renderer.domElement );
+				controls.addEventListener( 'change', render ); // remove when using animation loop
+				document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+				
+				window.addEventListener( 'resize', onWindowResize, false );
+			}
+
+			function onWindowResize() {
+
+				windowHalfX = window.innerWidth / 2;
+				windowHalfY = window.innerHeight / 2;
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			function onDocumentMouseMove( event ) {
+
+				mouseX = ( event.clientX - windowHalfX ) / 2;
+				mouseY = ( event.clientY - windowHalfY ) / 2;
+
+			}
+
+			function animate() {
+				controls.update();
+				requestAnimationFrame( animate );
+				render();
+				//renderer.render( scene, camera );
+			}
+
+			function render() {
+
+				//camera.position.x += ( mouseX - camera.position.x ) * .05;
+				//camera.position.y += ( - mouseY - camera.position.y ) * .05;
+
+				//camera.lookAt( scene.position );
+
+				renderer.render( scene, camera );
+
+			}
+			
+			
+			/**************************************************************************************/
+			
+			function loadObject(modelInfo, color, opacity)
+			{			
+				var selectedObject = null;
+				selectedObject = scene.getObjectByName(modelInfo.name);
+				if (null != selectedObject)
+				{
+					//console.log(modelInfo.name + " has been loaded, skip it");
+					return;
+				}
+				
+				// model
+				var onProgress = function ( xhr ) {
+					if ( xhr.lengthComputable ) {
+						var percentComplete = xhr.loaded / xhr.total * 100;
+						//console.log( Math.round(percentComplete, 2) + '% downloaded' );
+						var x = document.getElementById("info2");  //查找元素
+						x.innerHTML="Loading "+ Math.round(percentComplete, 2) + "%";    //改变内容
+					}
+				};
+
+				var onError = function ( xhr ) { console.log("Load Error");};
+				
+				var fn = modelInfo.name.replace(/obj/gi, 'mtl');
+				
+				//console.log("path:" + modelInfo.path + " Mtl:" + fn + " name:" + modelInfo.name);
+				THREE.Loader.Handlers.add( /\.jpg$/i, new THREE.TextureLoader() );
+				var mtlLoader = new THREE.MTLLoader();
+				mtlLoader.setPath( modelInfo.path);				
+				mtlLoader.load( fn, function( materials ) {
+				
+					materials.preload();
+
+					var objLoader = new THREE.OBJLoader();
+					objLoader.setMaterials( materials );
+					
+					objLoader.setPath( modelInfo.path );
+					objLoader.load( modelInfo.name, function ( object ) {
+						object.name = modelInfo.name;
+						
+						object.traverse( function ( child ) {
+
+							if ( child instanceof THREE.Mesh ) {
+
+								objs.push(child);  //对象列表
+								
+								if (child.material instanceof  Array)
+								{
+									for(var i = 0; i < child.material.length; i++)
+									{
+										if (color)
+										{
+											child.material[i].color.r = 1;
+											child.material[i].color.g = 0;
+											child.material[i].color.b = 0;
+										}
+										if (opacity)
+										{
+											child.material[i].transparent = true;
+											child.material[i].opacity = 0.3;
+										}
+										
+									}
+								}
+								else
+								{
+									if (color)
+									{
+										child.material.color.r = 1;
+										child.material.color.g = 0;
+										child.material.color.b = 0;
+									}
+									if (opacity)
+									{
+										child.material.transparent = true;
+										child.material.opacity = 0.3;
+									}
+								}
+								
+							}
+						} );
+						
+						scene.add( object );
+					}, onProgress, onError );
+
+				});
+			}
+			
+			function unloadObjectByName(modelName)
+			{
+				var selectedObject = scene.getObjectByName(modelName);
+				if (null != selectedObject)
+				{
+					scene.remove( selectedObject );
+				}
+				//objs.push(child);  //对象列表
+			}
+			
+			function onTimeSelected()
+			{
+				//获取用户选择的时间 放入2个Array中
+				var sTime = document.getElementById("startTime").value;
+				var eTime = document.getElementById("endTime").value;
+
+				var sTimeArry = sTime.split("-");
+				var eTimeArry = eTime.split("-");
+								
+				var sDate = new Date(sTimeArry[0], sTimeArry[1], sTimeArry[2]);
+				var eDate = new Date(eTimeArry[0], eTimeArry[1], eTimeArry[2]);
+				
+				for (var x = 0; x < comp.length; x++)
+				{	
+					var timearry = comp[x].time.split('-');
+					var iDate = new Date(timearry[0], timearry[1], timearry[2]);
+					
+					if (iDate.getTime() <= sDate.getTime() )  //时间点之前的加载
+					{
+						console.log("Load:" + comp[x].path + comp[x].name + "time:" + comp[x].time);
+						loadObject(comp[x], false, false);
+					}
+					else if ((iDate.getTime() > eDate.getTime() )) //时间点之后的卸载
+					{
+						console.log("Unload " + comp[x].path + comp[x].name);
+						
+						//unloadObjectByName(comp[x].name);
+						loadObject(comp[x], false, true);
+					}
+					else
+					{
+						console.log("unbuild");
+						loadObject(comp[x], true, false);
+					}
+				}
+				
+			}
+			
+			function onDocumentMouseDown( e ) {
+
+				var mouseX = ( e.clientX / window.innerWidth ) * 2 - 1;
+				var mouseY = - ( e.clientY / window.innerHeight ) * 2 + 1;
+
+				var vector = new THREE.Vector3(mouseX, mouseY, 1);
+
+				vector.unproject(camera);
+				console.log(vector.x + "  " + vector.y );
+				var ray = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
+
+				var intersects = ray.intersectObjects(objs);
+				
+				console.log(intersects.length);
+				
+				if ( intersects.length > 0 ) {
+					
+					//window.open("http://www.zhikuntech.com/pages/3", "xx互通建设信息","", false);
+
+					if (null == intersects[0])
+					{
+						
+					}
+					else
+					{
+						var selected = intersects[0];//取第一个物体
+						/*
+						selected.object.material.color.r = 1;
+						selected.object.material.color.g = 0;
+						selected.object.material.color.b = 0;
+						*/
+						
+						//selected.object.material.transparent = true;
+						//selected.object.material.opacity = 0.3;
+						//var x = document.getElementById("info2");  //查找元素
+						//x.innerHTML= selected.object.name + " is clicked";
+						var infoBox = document.getElementById('urlLinkMessageBox')
+						infoBox.innerHTML= selected.object.name + " is clicked";
+					}
+					
+				}
+			}
+
+			function onNext()
+			{
+				++iter;
+				console.log("autoload " + iter);
+				if (iter >= comp.length)
+				{
+					clearTimeout(timeoutProcess);  //遍历加载完毕
+					return;
+				}
+				
+				var opacity = ("0" == comp[iter].state) ? true:false;
+				var delay = ("1" == comp[iter].delay) ? true:false;
+				loadObject(comp[iter], delay, opacity);
+			}
+			
+			function onPreview()
+			{
+				console.log("unload " + iter);
+				if (iter < 0)
+				{
+					iter = -1;
+					return;
+				}
+				
+				clearTimeout(timeoutProcess);
+				unloadObjectByName(comp[iter].name);
+				--iter;
+			}
+			
+			/* 停止自动播放进度, 使能next, preview按钮失效 */
+			function onStop()
+			{
+				clearTimeout(timeoutProcess);
+			}
+			
+			function autoLoad()
+			{
+				onNext();
+				
+				if (iter < comp.length)
+				{
+					timeoutProcess = setTimeout(autoLoad, 2000);  //设置超时，加载下一个
+				}				
+			}
+			
+			/* 自动播放进度, 定时器自动加载模型，自动播放是,next, preview按钮失效 */
+			function onPlay()
+			{
+				var today = new Date();
+				
+				autoLoad();
+/*				
+				for (var x = 0; x < comp.length; x++)
+				{	
+					var timearry = comp[x].time.split('-');
+					var iDate = new Date(timearry[0], timearry[1], timearry[2]);
+					var opacity = ("0" == comp[x].state) ? true:false;
+					var delay = ("1" == comp[x].delay) ? true:false;
+					
+					//if (iDate.getTime() <= today.getTime() )  //时间点之后自动的加载
+					if (comp[x].state == "0")
+					{
+						console.log("Load " + comp[x].name + "Delay: " + delay);
+					}
+				}
+*/				
+			}
+			
+			/* 初始加载 和点击回退按钮回到到当前时间下的状态 */
+			function onRestore()
+			{
+				clearTimeout(timeoutProcess);
+				
+				var today = new Date();
+				
+				for (var x = 0; x < comp.length; x++)
+				{	
+					var timearry = comp[x].time.split('-');
+					var iDate = new Date(timearry[0], timearry[1], timearry[2]);
+					var opacity = ("0" == comp[x].state) ? true:false;
+					var delay = ("1" == comp[x].delay) ? true:false;
+					
+					//if (iDate.getTime() <= today.getTime() )  //时间点之前的加载
+					if (comp[x].state == "1")
+					{
+						//console.log("Load:" + comp[x].path + comp[x].name + "time:" + comp[x].time);
+						loadObject(comp[x], false, false);
+						iter = x;  //自动播放起始状态
+					}
+					else  //时间点之后的卸载
+					{
+						unloadObjectByName(comp[x].name);
+					}
+				}
+				
+			}
+			
+			
+			
+		</script>
+
+		<!-- 进度条拖动 -->
+		<script type="text/javascript">
+			var scroll = document.getElementById('scroll');
+    		var bar = document.getElementById('bar');
+    		var mask = document.getElementById('mask');
+    		var barleft = 0;
+    		var progress = document.getElementById("progressShow"); 
+
+   		    bar.onmousedown = function(event){
+      			var event = event || window.event;
+      			var leftVal = event.clientX - this.offsetLeft;
+      			var that = this;
+
+       			// 拖动一定写到 down 里面才可以
+      			document.onmousemove = function(event){
+        			var event = event || window.event;
+       			    barleft = event.clientX - leftVal;     
+        			if(barleft < 0)
+          				barleft = 0;
+        			else if(barleft > scroll.offsetWidth - bar.offsetWidth)
+          				barleft = scroll.offsetWidth - bar.offsetWidth;
+        			mask.style.width = barleft +'px' ;  //初始化的时候用
+        			that.style.left = barleft + "px";
+
+        			progress.innerHTML = parseInt(barleft/(scroll.offsetWidth-bar.offsetWidth) * 100) + "%";
+ 
+        			window.getSelection ? window.getSelection().removeAllRanges() : document.selection.empty();
+      			}
+ 
+    		
+
+    			document.onmouseup = function(){//弹起鼠标更新进度，加载模型
+      				document.onmousemove = null; 
+				
+					var percentStr = document.getElementById("progressShow").innerHTML; 
+				
+					var percent = Number(percentStr.substr(0, percentStr.length-1));
+					var eIdx = parseInt(comp.length * percent/100);
+
+					console.log("Update progress bar to " + eIdx)
+
+					if (iter < eIdx) // 加载
+					{
+						for (; iter <= eIdx; iter++)
+						{
+							loadObject(comp[iter]);
+						}
+					}
+					else //卸载
+					{
+						for (; iter > eIdx; iter--)
+						{
+							unloadObjectByName(comp[iter].name);
+						}
+					}
+				}
+    		}
+		</script>
+		<!-- 进度条拖动 -->
+
+		<!-- 控件事件 统一配置接口 -->
+		<script type="text/javascript">
+
+			var playClickState = 0;
+
+			function onNeedShowOrHidden(object)
+			{
+				if(object.style.visibility == "visible")
+					object.style.visibility = "hidden";
+				else
+					object.style.visibility = "visible";
+			}
+
+			function onCameraNeedResize(moveType, moveData)
+			{
+				switch(moveType)
+				{
+					case 1: 
+						camera.position.y += moveData;
+						camera.position.z -= moveData;
+					break;
+					case 2: 
+						camera.position.z -= moveData;
+						camera.position.x += moveData;
+					break;
+				}
+			}
+
+			function onPlayerClick(object)
+			{
+				if(playClickState == 0)
+				{
+					object.src = "../../../assets/images/stop.svg";
+					playClickState = 1;
+
+					onNeeDisabled(1);
+					
+					onPlay();
+				}
+				else
+				{
+					object.src = "../../../assets/images/play.svg";
+					playClickState = 0;	
+
+					onNeeDisabled(2);
+				
+					onStop();
+				}
+			}
+
+			function onNeeDisabled(state)
+			{
+				var toPreview = document.getElementById("toPreview");
+				var toNext    = document.getElementById("toNext");
+
+				switch(state)
+				{
+					case 1:
+						toPreview.onclick = "";
+						toNext.onclick    = "";
+
+						toPreview.style.opacity = "0.5";
+						toNext.style.opacity    = "0.5"; 
+					break;
+
+					case 2:
+						toPreview.onclick = "onPreview()";
+						toNext.onclick    = "onNext()";
+
+						toPreview.style.opacity = "1";
+						toNext.style.opacity    = "1"; 
+					break;
+				}
+
+			}
+
+		</script>
+		<!-- 控件事件 统一配置接口 -->
+		
+	</body>
+</html>
